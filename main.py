@@ -1,8 +1,9 @@
 import asyncio
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
+from bot.handlers.author import register_author
 from bot.handlers.errors.errors_handler import register_errors_handler
 from bot.handlers.math.binary_number import register_binary_number
 from bot.handlers.math.quadratic_equation import register_quadratic_equation
@@ -11,7 +12,9 @@ from bot.handlers.math.sdnf_sknf import register_sdnf_sknf
 
 from bot.handlers.start_bot import register_start_bot
 from bot.handlers.math.simple_math_actions import register_simple_math_actions
+from bot.handlers.user import register_user
 from bot.services.setting_commands import set_default_commands
+from database.user.sqlite import db_start
 
 
 def register_all_handlers(dp):
@@ -22,11 +25,18 @@ def register_all_handlers(dp):
     register_binary_number(dp)
     register_sdnf_sknf(dp)
 
+    register_author(dp)
+    register_user(dp)
+
     register_errors_handler(dp)
 
 
 async def set_all_default_commands(bot: Bot):
     await set_default_commands(bot)
+
+
+async def on_startup():
+    await db_start()
 
 
 async def main():
@@ -38,6 +48,7 @@ async def main():
     register_all_handlers(dp)
 
     try:
+        await on_startup()
         await dp.start_polling()
     finally:
         await dp.storage.close()

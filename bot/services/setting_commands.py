@@ -10,6 +10,8 @@ async def set_default_commands(bot: Bot):
             BotCommand('binary_number', 'Двоичная система счисления'),
             BotCommand('truth_table', 'Таблица истинности'),
             BotCommand('sdnf_sknf', 'СДНФ и СКНФ'),
+            BotCommand('user', 'информация об пользователи'),
+            BotCommand('author', 'информация об авторе')
         ],
         scope=BotCommandScopeDefault()
     )
