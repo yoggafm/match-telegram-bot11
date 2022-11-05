@@ -9,6 +9,7 @@ async def set_default_commands(bot: Bot):
             BotCommand('quadratic_equation', 'Квадратное уравнение'),
             BotCommand('binary_number', 'Двоичная система счисления'),
             BotCommand('truth_table', 'Таблица истинности'),
+            BotCommand('sdnf_sknf', 'СДНФ и СКНФ'),
         ],
         scope=BotCommandScopeDefault()
     )

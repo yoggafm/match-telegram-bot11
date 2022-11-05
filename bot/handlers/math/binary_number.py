@@ -49,7 +49,7 @@ async def answer_result(message: types.Message, state: FSMContext):
     if from_ == '2' and to_ == '10':
         await message.answer(f'Result: {str(int(number, 2))}')
     elif from_ == '10' and to_ == '2':
-        await message.answer(f'Result: {str(bin(int(number)))}')
+        await message.answer(f'Result: {str(bin(int(number)))[2:]}')
 
     await state.finish()
 
