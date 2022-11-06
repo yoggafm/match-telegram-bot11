@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -58,7 +59,7 @@ async def main():
             host=WEBAPP_HOST,
             port=WEBAPP_PORT,
         )
-        # await dp.start_polling()
+        await dp.start_polling()
     finally:
         await bot.delete_webhook()
         await dp.storage.close()
@@ -67,4 +68,5 @@ async def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
