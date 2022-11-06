@@ -65,7 +65,7 @@ async def edit_photo(user_id: str, photo: str):
 async def edit_user(user_id, username: str = None, first_name: str = None,
                     last_name: str = None, age: int = None, description: str = None, photo: str = None):
     cur.execute(f'UPDATE users'
-                f' SET username = "{username}", first_name = "{first_name}", last_name = "{last_name}",'
+                f' SET username = "{username}", first_name = "{first_name}"e, last_name = "{last_name}",'
                 f' age = {age}, description = "{description}", photo = "{photo}"'
                 f' WHERE user_id = "{user_id}"')
     db.commit()
