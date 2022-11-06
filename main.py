@@ -19,9 +19,10 @@ from bot.services.setting_commands import set_default_commands
 from database.user.sqlite import db_start
 
 bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 
-def register_all_handlers(dp):
+def register_all_handlers():
     register_start_bot(dp)
 
     register_simple_math_actions(dp)
@@ -35,12 +36,12 @@ def register_all_handlers(dp):
     register_errors_handler(dp)
 
 
-async def set_all_default_commands(bot: Bot):
+async def set_all_default_commands():
     await set_default_commands(bot)
 
 
 async def on_startup(_):
-    # await db_start()
+    await db_start()
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
@@ -49,11 +50,9 @@ async def on_shutdown(_):
 
 
 async def main():
-    dp = Dispatcher(bot, storage=MemoryStorage())
+    await set_all_default_commands()
 
-    await set_all_default_commands(bot)
-
-    register_all_handlers(dp)
+    register_all_handlers()
 
     try:
         await start_webhook(
@@ -65,6 +64,7 @@ async def main():
             on_startup=on_startup,
             on_shutdown=on_shutdown
         )
+        # await on_startup(dp)
         # await dp.start_polling()
     finally:
         await bot.delete_webhook()
