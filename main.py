@@ -59,7 +59,7 @@ async def main():
             host=WEBAPP_HOST,
             port=WEBAPP_PORT,
         )
-        await dp.start_polling()
+        # await dp.start_polling()
     finally:
         await bot.delete_webhook()
         await dp.storage.close()
