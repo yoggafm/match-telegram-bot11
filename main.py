@@ -42,7 +42,7 @@ async def set_all_default_commands():
 
 async def on_startup(_):
     await db_start()
-    await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+    # await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(_):
@@ -55,17 +55,17 @@ async def main():
     register_all_handlers()
 
     try:
-        await start_webhook(
-            dispatcher=dp,
-            webhook_path=WEBHOOK_PATH,
-            skip_updates=True,
-            host=WEBAPP_HOST,
-            port=WEBAPP_PORT,
-            on_startup=on_startup,
-            on_shutdown=on_shutdown
-        )
-        # await on_startup(dp)
-        # await dp.start_polling()
+        # await start_webhook(
+        #     dispatcher=dp,
+        #     webhook_path=WEBHOOK_PATH,
+        #     skip_updates=True,
+        #     host=WEBAPP_HOST,
+        #     port=WEBAPP_PORT,
+        #     on_startup=on_startup,
+        #     on_shutdown=on_shutdown
+        # )
+        await on_startup(dp)
+        await dp.start_polling()
     finally:
         await bot.delete_webhook()
         await dp.storage.close()
