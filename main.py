@@ -18,6 +18,8 @@ from bot.handlers.user import register_user
 from bot.services.setting_commands import set_default_commands
 from database.user.sqlite import db_start
 
+bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
+
 
 def register_all_handlers(dp):
     register_start_bot(dp)
@@ -37,13 +39,16 @@ async def set_all_default_commands(bot: Bot):
     await set_default_commands(bot)
 
 
-async def on_startup(bot: Bot):
-    await db_start()
+async def on_startup(_):
+    # await db_start()
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
+async def on_shutdown(_):
+    await bot.delete_webhook()
+
+
 async def main():
-    bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
     dp = Dispatcher(bot, storage=MemoryStorage())
 
     await set_all_default_commands(bot)
@@ -51,13 +56,14 @@ async def main():
     register_all_handlers(dp)
 
     try:
-        await on_startup(bot=bot)
         await start_webhook(
             dispatcher=dp,
             webhook_path=WEBHOOK_PATH,
             skip_updates=True,
             host=WEBAPP_HOST,
             port=WEBAPP_PORT,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown
         )
         # await dp.start_polling()
     finally:
