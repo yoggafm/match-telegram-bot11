@@ -55,6 +55,7 @@ async def main():
     register_all_handlers()
 
     try:
+        logging.basicConfig(level=logging.INFO)
         await start_webhook(
             dispatcher=dp,
             webhook_path=WEBHOOK_PATH,
@@ -74,5 +75,4 @@ async def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
